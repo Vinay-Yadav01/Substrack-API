@@ -22,6 +22,7 @@ const subscriptionSchema = new mongoose.Schema(
     },
     frequency: {
       type: String,
+      required: [true, "Subscription frequency is required"],
       enum: ["daily", "weekly", "monthly", "yearly"],
     },
     category: {
@@ -46,7 +47,7 @@ const subscriptionSchema = new mongoose.Schema(
       required: [true, "Start date is required"],
       validate: {
         validator: function (value) {
-          return value < this.renewalDate;
+          return value < new Date();
         },
         message: "Start date must be before renewal date",
       },
@@ -84,9 +85,7 @@ subscriptionSchema.pre("save", function (next) {
     );
   }
 
-  console.log(this.renewalDate);
-
-  if (this.renewalDate < Date.now()) {
+  if (this.renewalDate < new Date()) {
     this.status = "inactive";
   }
   next();

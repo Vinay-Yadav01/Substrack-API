@@ -8,7 +8,9 @@ SubscriptionRouter.get("/", (req, res) => {
   res.send({ title: "Get all subscriptions" });
 });
 
-SubscriptionRouter.get("/:id", (req, res) => getUserSubscriptions);
+SubscriptionRouter.get("/:id", (req, res) => {
+  res.send({ title: "Get subscription by ID" });
+});
 
 SubscriptionRouter.post("/", authorize, createSubscription);
 
@@ -20,9 +22,7 @@ SubscriptionRouter.delete("/:id", (req, res) => {
   res.send({ title: "Delete subscription by ID" });
 });
 
-SubscriptionRouter.get("/user/:id", (req, res) => {
-  res.send({ title: "Get all user subscriptions" });
-});
+SubscriptionRouter.get("/user/:id", authorize, getUserSubscriptions);
 
 SubscriptionRouter.put("/:id/cancel", (req, res) => {
   res.send({ title: "Cancel subscription by ID" });
